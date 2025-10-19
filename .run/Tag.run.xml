@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tag" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+    <option name="FILE_PATH" value="D:\GitRepos\cucu-suite\cucu-test\src\main\resources\features" />
+    <option name="GLUE" value="com.cucu.test.stepDefinition" />
+    <option name="MAIN_CLASS_NAME" value="io.cucumber.core.cli.Main" />
+    <module name="cucu-test" />
+    <option name="PROGRAM_PARAMETERS" value="--plugin org.jetbrains.plugins.cucumber.java.run.CucumberJvm5SMFormatter --threads 20" />
+    <shortenClasspath name="MANIFEST" />
+    <option name="VM_PARAMETERS" value="-D&quot;cucumber.plugin&quot;=&quot;pretty, html:cucu-test/target/cucumber/report.html, json:cucu-test/target/cucumber/report.json, message:cucu-test/target/cucumber/report.ndjson&quot; -D&quot;cucumber.filter.tags&quot;=&quot;@test&quot;" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

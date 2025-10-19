@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="LOG_PATTERN">
+            [%t] [%d{HH:mm:ss.SSS}] [%-6p] [%C{3}.%M(%F:%L)] - %m%n
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+        </Console>
+        <RollingFile name="file-log"
+                     fileName="target/log4j2/test/log"
+                     ignoreException="false">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.springframework.jdbc.core" level="trance" additivity="false">
+            <appender-ref ref="file-log"/>
+            <appender-ref ref="console"/>
+        </Logger>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="file-log" />
+        </Root>
+    </Loggers>
+</Configuration>
