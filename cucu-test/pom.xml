@@ -11,6 +11,8 @@
     <name>Archetype - cucu-test</name>
     <url>http://maven.apache.org</url>
 
+    <packaging>jar</packaging>
+
     <properties>
         <testng>7.7.1</testng>
         <selenium.java>4.7.2</selenium.java>
