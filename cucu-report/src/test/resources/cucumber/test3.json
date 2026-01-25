@@ -1,0 +1,59 @@
+{
+  "pickle": {
+    "id": "be8a9039-8f66-44e3-90b3-71859a52dbd7",
+    "uri": "file:///D:/GitRepos/cucu-suite/cucu-test/src/main/resources/features/Test%20Feature%202.feature",
+    "name": "Title of your scenario outline2.2",
+    "language": "en",
+    "steps": [
+      {
+        "astNodeIds": [
+          "9341d5fc-7d14-44ca-adee-45e04293ad05"
+        ],
+        "id": "682e19c2-f2cd-4c6a-b54e-7b9f04c68ec0",
+        "type": "Context",
+        "text": "I complete action"
+      },
+      {
+        "astNodeIds": [
+          "96135d77-f521-4364-a353-0d5d0c76350e",
+          "33cfc103-7a99-4716-b86e-d3930b8ebbcf"
+        ],
+        "id": "f191b2e4-a7af-4fdd-a3cd-cb46245a4628",
+        "type": "Context",
+        "text": "I want to write a step with name1"
+      },
+      {
+        "astNodeIds": [
+          "0018679b-303e-421b-83f9-45e222554c96",
+          "33cfc103-7a99-4716-b86e-d3930b8ebbcf"
+        ],
+        "id": "3140652a-4a7e-4fcc-a86f-fe188cce5f34",
+        "type": "Action",
+        "text": "I check for the 5 in step"
+      },
+      {
+        "astNodeIds": [
+          "b11403e7-9da0-4c7d-bd23-1676011a3a9e",
+          "33cfc103-7a99-4716-b86e-d3930b8ebbcf"
+        ],
+        "id": "d0052321-1c46-4b19-82eb-4b001f2d20f2",
+        "type": "Outcome",
+        "text": "I verify the success in step"
+      }
+    ],
+    "tags": [
+      {
+        "name": "@test",
+        "astNodeId": "4a0fe7e9-879f-4168-8e62-0a8352ef9591"
+      },
+      {
+        "name": "@tag1.2",
+        "astNodeId": "bfcebd09-3ff8-48be-87b5-d8a0077cc411"
+      }
+    ],
+    "astNodeIds": [
+      "2696cbc2-23b7-4aaa-9c2e-5083c8fb9d1e",
+      "33cfc103-7a99-4716-b86e-d3930b8ebbcf"
+    ]
+  }
+}

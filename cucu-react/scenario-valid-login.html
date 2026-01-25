@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="root" data-page="scenario"></div>
+
+<script id="theme-config" type="application/json">
+{
+  "mode": "dark",
+  "sla": { "stepTimeMs": 2000 }
+}
+</script>
+
+<script id="report-data" type="application/json">
+{
+  "feature": "Login",
+  "scenario": "Valid Login",
+  "duration": 3200,
+  "steps": [
+    { "text": "Given login page", "status": "PASSED", "time": 500 },
+    { "text": "When credentials entered", "status": "PASSED", "time": 1200 },
+    { "text": "Then dashboard visible", "status": "PASSED", "time": 2500 }
+  ]
+}
+</script>
+
+<script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

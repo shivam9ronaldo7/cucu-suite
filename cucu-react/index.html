@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"/><title>Dashboard</title></head>
+<body>
+<div id="root" data-page="home"></div>
+
+<script id="theme-config" type="application/json">
+{
+  "mode": "dark",
+  "allowUserToggle": true,
+  "sla": { "stepTimeMs": 2000 }
+}
+</script>
+
+<script id="report-data" type="application/json">
+{
+  "availableTags": ["@smoke", "@regression"],
+  "scenarios": [
+    { "name": "Valid Login", "tags": ["@smoke"], "html": "scenario-valid-login.html" },
+    { "name": "Invalid Login", "tags": ["@regression"], "html": "scenario-valid-login.html" }
+  ]
+}
+</script>
+
+<script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

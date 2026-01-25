@@ -1,0 +1,89 @@
+{
+  "testCase": {
+    "id": "e6471cf6-49fa-4474-8949-584d4bc090c9",
+    "pickleId": "be8a9039-8f66-44e3-90b3-71859a52dbd7",
+    "testSteps": [
+      {
+        "hookId": "3a68888a-448a-4ab6-a39f-7d3a39436850",
+        "id": "9c47e74c-a77a-49de-94b1-3ee09ae87919"
+      },
+      {
+        "id": "437777b4-0a3b-48de-81ed-6cab8cc2f739",
+        "pickleStepId": "682e19c2-f2cd-4c6a-b54e-7b9f04c68ec0",
+        "stepDefinitionIds": [
+          "f25ea38a-c862-48e6-8e4e-f218018eab12"
+        ],
+        "stepMatchArgumentsLists": [
+          {
+            "stepMatchArguments": []
+          }
+        ]
+      },
+      {
+        "hookId": "4078d32e-2361-4156-8f15-3253718c5b00",
+        "id": "1007e49c-31ca-4030-acf8-42e26123885d"
+      },
+      {
+        "id": "60d7855e-a728-419a-9eef-d2c89375e72b",
+        "pickleStepId": "f191b2e4-a7af-4fdd-a3cd-cb46245a4628",
+        "stepDefinitionIds": [
+          "a75f13f6-8f1c-414c-a717-036d663632bc"
+        ],
+        "stepMatchArgumentsLists": [
+          {
+            "stepMatchArguments": []
+          }
+        ]
+      },
+      {
+        "hookId": "4078d32e-2361-4156-8f15-3253718c5b00",
+        "id": "0b6e28f8-5614-4173-b6f9-7a95d3522ec0"
+      },
+      {
+        "id": "4ebcb799-1d54-418f-b5e5-fb06548a7d07",
+        "pickleStepId": "3140652a-4a7e-4fcc-a86f-fe188cce5f34",
+        "stepDefinitionIds": [
+          "3187d0c7-caa7-4781-8f06-d73f25be6195"
+        ],
+        "stepMatchArgumentsLists": [
+          {
+            "stepMatchArguments": [
+              {
+                "group": {
+                  "children": [],
+                  "start": 16,
+                  "value": "5"
+                },
+                "parameterTypeName": "int"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "hookId": "4078d32e-2361-4156-8f15-3253718c5b00",
+        "id": "911f342a-e856-4837-a8a3-b069fd4b510d"
+      },
+      {
+        "id": "dc8b5529-e3c5-4e03-8c21-c0719ecfd355",
+        "pickleStepId": "d0052321-1c46-4b19-82eb-4b001f2d20f2",
+        "stepDefinitionIds": [
+          "1165c7cd-fc59-42e1-97fd-5988a3550e3f"
+        ],
+        "stepMatchArgumentsLists": [
+          {
+            "stepMatchArguments": []
+          }
+        ]
+      },
+      {
+        "hookId": "4078d32e-2361-4156-8f15-3253718c5b00",
+        "id": "1e7da004-bc01-4e6b-9b77-5507cd8a89a1"
+      },
+      {
+        "hookId": "fc8d3907-c95c-4e07-b7c7-8f4e565eb1f5",
+        "id": "f5d9f612-6dcf-4c1c-ac57-a9fd5607fe9b"
+      }
+    ]
+  }
+}

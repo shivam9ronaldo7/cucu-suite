@@ -5,7 +5,7 @@
     <option name="MAIN_CLASS_NAME" value="io.cucumber.core.cli.Main" />
     <module name="cucu-test" />
     <shortenClasspath name="MANIFEST" />
-    <option name="VM_PARAMETERS" value="-D&quot;cucumber.plugin&quot;=&quot;pretty, html:cucu-test/target/cucumber/report.html, json:cucu-test/target/cucumber/report.json, message:cucu-test/target/cucumber/report.ndjson&quot;" />
+    <option name="VM_PARAMETERS" value="-D&quot;cucumber.plugin&quot;=&quot;pretty, html:target/cucumber/report.html, json:target/cucumber/report.json, message:target/cucumber/report.ndjson&quot;" />
     <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
     <method v="2">
       <option name="Make" enabled="true" />

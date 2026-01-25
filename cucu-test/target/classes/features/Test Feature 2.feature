@@ -4,6 +4,9 @@
 Feature: Title of your feature2
   I want to use this template for my feature file
 
+  Background:
+    Given I complete action
+
   @tag1.1
   Scenario: Title of your scenario2.1
     Given I want to write a step with precondition
