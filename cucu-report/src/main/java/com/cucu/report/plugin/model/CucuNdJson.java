@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Map;
 
 @Getter
@@ -19,15 +20,15 @@ public class CucuNdJson {
     @Setter
     private Map<Object, Object> testRunFinished;
 
-    private final LinkedList<Map<Object, Object>> testCaseList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> hookList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> testCaseStartedList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> testCaseFinishedList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> pickleList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> testStepStartedList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> testStepFinishedList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> attachmentList = new LinkedList<>();
-    private final LinkedList<Map<Object, Object>> gherkinDocumentList = new LinkedList<>();
+    private final ArrayList<Map<Object, Object>> testCaseList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> hookList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> testCaseStartedList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> testCaseFinishedList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> pickleList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> testStepStartedList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> testStepFinishedList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> attachmentList = new ArrayList<>();
+    private final ArrayList<Map<Object, Object>> gherkinDocumentList = new ArrayList<>();
 
     public void setAttachment(Map<Object, Object> attachment) {
         this.attachmentList.add(attachment);

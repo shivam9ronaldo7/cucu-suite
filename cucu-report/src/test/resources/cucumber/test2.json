@@ -1,349 +1,113 @@
 {
-  "gherkinDocument": {
+  "pickle": {
+    "id": "a7576bc4-f508-43d2-9db3-a13cf0279bcc",
     "uri": "file:///D:/GitRepos/cucu-suite/cucu-test/src/main/resources/features/Test%20Feature%202.feature",
-    "feature": {
-      "location": {
-        "line": 4,
-        "column": 1
-      },
-      "tags": [
-        {
-          "location": {
-            "line": 3,
-            "column": 1
-          },
-          "name": "@test",
-          "id": "4a0fe7e9-879f-4168-8e62-0a8352ef9591"
-        }
-      ],
-      "language": "en",
-      "keyword": "Feature",
-      "name": "Title of your feature2",
-      "description": "  I want to use this template for my feature file",
-      "children": [
-        {
-          "background": {
-            "location": {
-              "line": 7,
-              "column": 3
-            },
-            "keyword": "Background",
-            "name": "",
-            "description": "",
-            "steps": [
-              {
-                "location": {
-                  "line": 8,
-                  "column": 5
-                },
-                "keyword": "Given ",
-                "keywordType": "Context",
-                "text": "I complete action",
-                "id": "9341d5fc-7d14-44ca-adee-45e04293ad05"
-              }
-            ],
-            "id": "93973eae-0421-4673-97df-4aa87b6180b6"
-          }
-        },
-        {
-          "scenario": {
-            "location": {
-              "line": 11,
-              "column": 3
-            },
-            "tags": [
-              {
-                "location": {
-                  "line": 10,
-                  "column": 3
-                },
-                "name": "@tag1.1",
-                "id": "669afd2f-329b-4cdd-956a-12566e84cc26"
-              }
-            ],
-            "keyword": "Scenario",
-            "name": "Title of your scenario2.1",
-            "description": "",
-            "steps": [
-              {
-                "location": {
-                  "line": 12,
-                  "column": 5
-                },
-                "keyword": "Given ",
-                "keywordType": "Context",
-                "text": "I want to write a step with precondition",
-                "id": "63dda41c-5764-4f7e-84fb-06174ed4b695"
-              },
-              {
-                "location": {
-                  "line": 13,
-                  "column": 5
-                },
-                "keyword": "And ",
-                "keywordType": "Conjunction",
-                "text": "some other precondition",
-                "id": "7c4c88a1-c732-42c4-a304-efecb459b4c8"
-              },
-              {
-                "location": {
-                  "line": 14,
-                  "column": 5
-                },
-                "keyword": "When ",
-                "keywordType": "Action",
-                "text": "I complete action",
-                "id": "e0bd760f-bcfe-468f-a8ac-80ce14b81be7"
-              },
-              {
-                "location": {
-                  "line": 15,
-                  "column": 5
-                },
-                "keyword": "And ",
-                "keywordType": "Conjunction",
-                "text": "some other action",
-                "id": "76acfc62-c9e7-40e1-8cbe-0e2cad7e87dc"
-              },
-              {
-                "location": {
-                  "line": 16,
-                  "column": 5
-                },
-                "keyword": "And ",
-                "keywordType": "Conjunction",
-                "text": "yet another action",
-                "id": "965b5fd5-1c21-4063-8c7f-7ec5f0f0c2b4"
-              },
-              {
-                "location": {
-                  "line": 17,
-                  "column": 5
-                },
-                "keyword": "Then ",
-                "keywordType": "Outcome",
-                "text": "I validate the outcomes",
-                "id": "fc04ea0d-c51e-4713-8a9c-31d2b8939324"
-              },
-              {
-                "location": {
-                  "line": 18,
-                  "column": 5
-                },
-                "keyword": "And ",
-                "keywordType": "Conjunction",
-                "text": "check more outcomes",
-                "id": "87dd9194-4529-4c19-b878-d84b461af4f1"
-              }
-            ],
-            "examples": [],
-            "id": "23dfb731-6462-4e13-b577-29e0476b4124"
-          }
-        },
-        {
-          "scenario": {
-            "location": {
-              "line": 21,
-              "column": 3
-            },
-            "tags": [
-              {
-                "location": {
-                  "line": 20,
-                  "column": 3
-                },
-                "name": "@tag1.2",
-                "id": "bfcebd09-3ff8-48be-87b5-d8a0077cc411"
-              }
-            ],
-            "keyword": "Scenario Outline",
-            "name": "Title of your scenario outline2.2",
-            "description": "",
-            "steps": [
-              {
-                "location": {
-                  "line": 22,
-                  "column": 5
-                },
-                "keyword": "Given ",
-                "keywordType": "Context",
-                "text": "I want to write a step with <name>",
-                "id": "96135d77-f521-4364-a353-0d5d0c76350e"
-              },
-              {
-                "location": {
-                  "line": 23,
-                  "column": 5
-                },
-                "keyword": "When ",
-                "keywordType": "Action",
-                "text": "I check for the <value> in step",
-                "id": "0018679b-303e-421b-83f9-45e222554c96"
-              },
-              {
-                "location": {
-                  "line": 24,
-                  "column": 5
-                },
-                "keyword": "Then ",
-                "keywordType": "Outcome",
-                "text": "I verify the <status> in step",
-                "id": "b11403e7-9da0-4c7d-bd23-1676011a3a9e"
-              }
-            ],
-            "examples": [
-              {
-                "location": {
-                  "line": 25,
-                  "column": 5
-                },
-                "tags": [],
-                "keyword": "Examples",
-                "name": "",
-                "description": "",
-                "tableHeader": {
-                  "location": {
-                    "line": 26,
-                    "column": 7
-                  },
-                  "cells": [
-                    {
-                      "location": {
-                        "line": 26,
-                        "column": 9
-                      },
-                      "value": "name"
-                    },
-                    {
-                      "location": {
-                        "line": 26,
-                        "column": 17
-                      },
-                      "value": "value"
-                    },
-                    {
-                      "location": {
-                        "line": 26,
-                        "column": 25
-                      },
-                      "value": "status"
-                    }
-                  ],
-                  "id": "2fe87b0a-044d-43a3-9898-4766c35b4d5a"
-                },
-                "tableBody": [
-                  {
-                    "location": {
-                      "line": 27,
-                      "column": 7
-                    },
-                    "cells": [
-                      {
-                        "location": {
-                          "line": 27,
-                          "column": 9
-                        },
-                        "value": "name1"
-                      },
-                      {
-                        "location": {
-                          "line": 27,
-                          "column": 21
-                        },
-                        "value": "5"
-                      },
-                      {
-                        "location": {
-                          "line": 27,
-                          "column": 25
-                        },
-                        "value": "success"
-                      }
-                    ],
-                    "id": "33cfc103-7a99-4716-b86e-d3930b8ebbcf"
-                  },
-                  {
-                    "location": {
-                      "line": 28,
-                      "column": 7
-                    },
-                    "cells": [
-                      {
-                        "location": {
-                          "line": 28,
-                          "column": 9
-                        },
-                        "value": "name2"
-                      },
-                      {
-                        "location": {
-                          "line": 28,
-                          "column": 21
-                        },
-                        "value": "7"
-                      },
-                      {
-                        "location": {
-                          "line": 28,
-                          "column": 25
-                        },
-                        "value": "Fail"
-                      }
-                    ],
-                    "id": "9f61016d-db74-41c7-8d6a-b82b98e76820"
-                  }
-                ],
-                "id": "c4738a78-2a5d-4c0a-b7f5-e06e46f2f94e"
-              }
-            ],
-            "id": "2696cbc2-23b7-4aaa-9c2e-5083c8fb9d1e"
-          }
-        },
-        {
-          "scenario": {
-            "location": {
-              "line": 30,
-              "column": 3
-            },
-            "tags": [],
-            "keyword": "Scenario",
-            "name": "Placeholder",
-            "description": "",
-            "steps": [
-              {
-                "location": {
-                  "line": 31,
-                  "column": 5
-                },
-                "keyword": "Given ",
-                "keywordType": "Context",
-                "text": "user adds below placeholder",
-                "docString": {
-                  "location": {
-                    "line": 32,
-                    "column": 5
-                  },
-                  "mediaType": "json-placeholder-data",
-                  "content": "[\n  {\n    \"key\": \"numeric\",\n    \"type\": \"random\",\n    \"details\": {\n      \"length\": 9,\n      \"type\": \"numeric\"\n    }\n  },\n  {\n    \"key\": \"alphanumeric\",\n    \"type\": \"random\",\n    \"details\": {\n      \"length\": 9,\n      \"type\": \"alphanumeric\"\n    }\n  },\n  {\n    \"key\": \"alphanumeric\",\n    \"type\": \"random\",\n    \"details\": {\n      \"length\": 9,\n      \"type\": \"alphabetic\"\n    }\n  },\n  {\n    \"key\": \"uuid\",\n    \"type\": \"random\",\n    \"details\": {\n      \"type\": \"uuid\"\n    }\n  },\n  {\n    \"key\": \"timestamp\",\n    \"type\": \"timestamp\",\n    \"details\": {\n      \"format\": \"yyyy-MMM-dd\",\n      \"timezone\": \"Asia/Kolkata\",\n      \"timeStampOffsetDetails\": {\n        \"unit\": \"hours\",\n        \"value\": -2\n      }\n    }\n  },\n  {\n    \"key\": \"replace-placeholder\",\n    \"type\": \"replace\",\n    \"details\": {\n      \"text\": \"SHIV-:uuid:\"\n    }\n  }\n]",
-                  "delimiter": "\"\"\""
-                },
-                "id": "f0c56f32-91b5-4e22-9bf9-e90a473dfba4"
-              }
-            ],
-            "examples": [],
-            "id": "ebc71757-e54f-43f7-8050-2de5d93c62d4"
-          }
-        }
-      ]
-    },
-    "comments": [
+    "name": "Title of your scenario2.1",
+    "language": "en",
+    "steps": [
       {
-        "location": {
-          "line": 1,
-          "column": 1
+        "astNodeIds": [
+          "fd7a154c-e533-4b28-9776-afab2fb8f283"
+        ],
+        "id": "57ff8d9e-5de2-4292-85b6-aa7647bc7d5b",
+        "type": "Context",
+        "text": "I complete action"
+      },
+      {
+        "argument": {
+          "dataTable": {
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "value": "Name"
+                  },
+                  {
+                    "value": "Age"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "value": "Shivam"
+                  },
+                  {
+                    "value": "32"
+                  }
+                ]
+              }
+            ]
+          }
         },
-        "text": "#Author: shivam9ronaldo7@gmail.com"
+        "astNodeIds": [
+          "67736d9c-c569-4aee-adac-b202b8245381"
+        ],
+        "id": "b1de2a2c-0ac4-4186-b308-9aaa8c7b058f",
+        "type": "Context",
+        "text": "I want to write a step with precondition"
+      },
+      {
+        "astNodeIds": [
+          "f9261179-dad9-4e55-8ca7-0b376f5dad89"
+        ],
+        "id": "413aec91-6f21-406f-988b-c02540c35efd",
+        "type": "Context",
+        "text": "some other precondition"
+      },
+      {
+        "astNodeIds": [
+          "d348521a-1ab1-4927-91bc-70d78ce28ae2"
+        ],
+        "id": "f0a483eb-c917-457b-8b2e-a267fbbdca76",
+        "type": "Action",
+        "text": "I complete action"
+      },
+      {
+        "astNodeIds": [
+          "378b0265-70dd-43f6-97b9-9f351593e986"
+        ],
+        "id": "e293fb60-2a64-4331-80ed-1cd68dd57a5f",
+        "type": "Action",
+        "text": "some other action"
+      },
+      {
+        "astNodeIds": [
+          "fc230e8e-5eed-4b96-b05a-9da92aa82ea1"
+        ],
+        "id": "4aca4e0e-9f6e-4b8c-8070-50e8e0e4a315",
+        "type": "Action",
+        "text": "yet another action"
+      },
+      {
+        "astNodeIds": [
+          "fce46e07-c45c-47b9-8043-bae95285e7f8"
+        ],
+        "id": "e7e802f2-b562-46e7-b7bd-eeede6986fc1",
+        "type": "Outcome",
+        "text": "I validate the outcomes"
+      },
+      {
+        "astNodeIds": [
+          "67902e00-73ce-4e65-85ea-692cfbbbedab"
+        ],
+        "id": "6151414b-d200-46e7-a6fc-e336b15a9d03",
+        "type": "Outcome",
+        "text": "check more outcomes"
       }
+    ],
+    "tags": [
+      {
+        "name": "@test",
+        "astNodeId": "ef904448-60f6-4ccd-9b2e-a504b532b55f"
+      },
+      {
+        "name": "@tag1.1",
+        "astNodeId": "b5d9978c-e10e-4c98-935c-06b32f6e19db"
+      }
+    ],
+    "astNodeIds": [
+      "07761732-57e5-4d5c-9dc6-c4626f069d00"
     ]
   }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cucu.test.exceptions.UnImplementedCallException;
 import com.cucu.test.exceptions.UnmatchedCaseException;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.DocStringType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -51,7 +52,7 @@ public class StepDefinition {
 	}
 
     @Given("I want to write a step with precondition")
-    public void i_want_to_write_a_step_with_precondition() {
+    public void i_want_to_write_a_step_with_precondition(DataTable dataTable) {
         reportUtil.reportLog("I want to write a step with precondition");
     }
 

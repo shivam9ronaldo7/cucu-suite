@@ -23,6 +23,7 @@
         <jackson-databind.version>2.21.0</jackson-databind.version>
         <jackson-core.version>2.21.0</jackson-core.version>
         <jackson-module-parameter-names.version>2.21.0</jackson-module-parameter-names.version>
+        <jackson-datatype-jsr310.version>2.21.0</jackson-datatype-jsr310.version>
         <lombok.version>1.18.42</lombok.version>
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
         <messages.version>31.2.0</messages.version>
@@ -66,6 +67,11 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-parameter-names</artifactId>
             <version>${jackson-module-parameter-names.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

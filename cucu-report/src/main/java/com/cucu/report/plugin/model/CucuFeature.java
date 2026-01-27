@@ -2,7 +2,7 @@ package com.cucu.report.plugin.model;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class CucuFeature {
 
@@ -11,7 +11,7 @@ public class CucuFeature {
     String featureName;
     String featureDescription;
 
-    LinkedList<CucuScenario> scenarios;
+    ArrayList<CucuScenario> scenarios;
 
     Instant startTime;
     Instant endTime;

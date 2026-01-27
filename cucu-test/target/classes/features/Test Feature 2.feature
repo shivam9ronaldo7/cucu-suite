@@ -10,6 +10,8 @@ Feature: Title of your feature2
   @tag1.1
   Scenario: Title of your scenario2.1
     Given I want to write a step with precondition
+      | Name   | Age |
+      | Shivam | 32  |
     And some other precondition
     When I complete action
     And some other action
@@ -22,10 +24,10 @@ Feature: Title of your feature2
     Given I want to write a step with <name>
     When I check for the <value> in step
     Then I verify the <status> in step
-    Examples: 
+    Examples:
       | name  | value | status  |
-      | name1 |     5 | success |
-      | name2 |     7 | Fail    |
+      | name1 | 5     | success |
+      | name2 | 7     | Fail    |
 
   Scenario: Placeholder
     Given user adds below placeholder

@@ -27,6 +27,7 @@ public class Hooks {
 
     @Before
     public void beforeHook(Scenario scenario) {
+//        throw new RuntimeException();
         reportUtil.setScenario(scenario);
     }
 

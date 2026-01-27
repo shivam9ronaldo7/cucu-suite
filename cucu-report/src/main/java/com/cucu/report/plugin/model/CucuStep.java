@@ -4,32 +4,31 @@ import lombok.Data;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Map;
+import java.util.List;
 
 @Data
 public class CucuStep {
 
-    private String stepType;
+    private CucStepType stepType;
     private String stepText;
 
     private Instant startTime;
     private Instant endTime;
     private Duration duration;
 
+    private String message;
+    private String exception;
+
+    private String docStringMediaType;
+    private String docStringContent;
+    private String docStringDelimiter;
+
+    private List<List<String>> dataTableRows;
+
     private String attachmentBody;
     private String attachmentContentEncoding;
     private String attachmentMediaType;
 
-    private Status status;
-
-    public String toString() {
-        return "CucuStep:\n" +
-                "Step Type: " + stepType + "\n" +
-                "Step Text: " + stepText + "\n" +
-                "Start Time: " + startTime + "\n" +
-                "End Time: " + endTime + "\n" +
-                "Duration: " + duration + "\n" +
-                "Status: " + status + "\n";
-    }
+    private CucStepStatus status;
 
 }

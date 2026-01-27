@@ -1,2 +1,14 @@
+com\cucu\report\plugin\CucuTransformer$1.class
+com\cucu\report\plugin\model\CucCommon.class
+com\cucu\report\plugin\model\CucStepType.class
+com\cucu\report\plugin\model\CucStepStatus.class
+com\cucu\report\plugin\model\CucScenarioStatus.class
+com\cucu\report\plugin\model\CucuScenario.class
+com\cucu\report\plugin\model\CucuNdJson.class
 com\cucu\report\plugin\CucuTransformer.class
+com\cucu\report\plugin\model\CucuTag.class
+com\cucu\report\plugin\model\CucuFeature.class
+com\cucu\report\plugin\config\CucuBeanInitializer.class
 com\cucu\report\plugin\CucuMojo.class
+com\cucu\report\plugin\model\CucScenarioType.class
+com\cucu\report\plugin\model\CucuStep.class

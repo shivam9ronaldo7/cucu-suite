@@ -1,8 +1,6 @@
 package com.cucu.report.plugin;
 
-import com.cucu.report.plugin.model.CucuNdJson;
-import com.cucu.report.plugin.model.CucuScenario;
-import com.cucu.report.plugin.model.CucuStep;
+import com.cucu.report.plugin.model.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.maven.plugin.logging.Log;
@@ -11,10 +9,7 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class CucuTransformer {
@@ -25,7 +20,7 @@ public class CucuTransformer {
 
     private CucuNdJson cucuNdJson;
 
-    private final LinkedList<CucuScenario> cucuScenarioList = new LinkedList<>();
+    private final ArrayList<CucuScenario> cucuScenarioList = new ArrayList<>();
 
     public CucuTransformer(Log mavenLog, ObjectMapper objectMapper) {
         this.mavenLog = mavenLog;
@@ -45,6 +40,10 @@ public class CucuTransformer {
                 cucuScenarioList.add(transformTestCaseToCucuScenario(testCase));
             }
         }
+        mavenLog.info("Transformation complete. Total Cucu Scenarios transformed: "
+                + cucuScenarioList.size());
+        mavenLog.info("Cucu Scenarios: \n"
+                + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(cucuScenarioList));
     }
 
     CucuNdJson transformNdJsonToCucuNdJson(File ndJson) throws IOException {
@@ -80,92 +79,239 @@ public class CucuTransformer {
         CucuScenario cucuScenario = new CucuScenario();
 
         String testCaseId = (String) testCase.get("id");
+        mavenLog.debug("Processing started for test case id: " + testCaseId);
         String testCasePickleId = (String) testCase.get("pickleId");
-        LinkedList<Map<Object, Object>> testSteps = (LinkedList<Map<Object, Object>>) testCase.get("testSteps");
-
-        // Parsing testCaseStarted and testCaseFinished to get scenario start and end time
-        Map<Object, Object> testCaseStarted = cucuNdJson.getTestCaseStartedUsingTestCaseId(testCaseId);
-        String testCaseStartedId = (String) testCaseStarted.get("id");
-        Instant cucuScenarioStartTime = Instant.ofEpochSecond(
-                ((Integer) ((Map<Object, Object>) testCaseStarted.get("timestamp")).get("seconds")).longValue(),
-                ((Integer) ((Map<Object, Object>) testCaseStarted.get("timestamp")).get("nanos")).longValue()
-        );
-        cucuScenario.setStartTime(cucuScenarioStartTime);
-
-        Map<Object, Object> testCaseFinished = cucuNdJson.getTestCaseFinishedUsingTestCaseStartedId(testCaseStartedId);
-        Instant cucuScenarioEndTime = Instant.ofEpochSecond(
-                ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("seconds")).longValue(),
-                ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("nanos")).longValue()
-        );
-        cucuScenario.setEndTime(cucuScenarioEndTime);
-
-        cucuScenario.setDuration(Duration.between(cucuScenarioStartTime, cucuScenarioEndTime));
-
-        // Parsing pickle to get scenario tags, feature file path
+        mavenLog.debug("Pickle id for test case: " + testCasePickleId);
+        ArrayList<Map<Object, Object>> testSteps = (ArrayList<Map<Object, Object>>) testCase.get("testSteps");
         Map<Object, Object> pickle = cucuNdJson.getPickleUsingPickleId(testCasePickleId);
-        LinkedList<String> tags = pickle.get("tags") != null ?
-                ((LinkedList<Map<Object, Object>>) pickle.get("tags")).stream()
-                        .map(tagMap -> tagMap.get("name").toString())
-                        .collect(LinkedList::new, LinkedList::add, LinkedList::addAll)
-                : null;
-        cucuScenario.setScenarioTags(tags);
-        cucuScenario.setFeatureFilePath(pickle.get("uri").toString());
+        List<String> pickleAstNodeIds = (List<String>) pickle.get("astNodeIds");
+        String gherkinDocumentFeatureChildrenScenarioId = pickleAstNodeIds.get(0);
 
-        // Parsing gherkinDocument to get feature name and description
-        Map<Object, Object> feature = (Map<Object, Object>) cucuNdJson
+        mavenLog.debug("Feature uri of test case: " + pickle.get("uri").toString());
+        Map<Object, Object> gherkinDocumentFeature = (Map<Object, Object>) cucuNdJson
                 .getGherkinDocumentUsingUri(pickle.get("uri").toString()).get("feature");
-        String featureName = feature.get("name").toString();
-        String featureDescription = feature.get("description").toString();
-        cucuScenario.setFeatureName(featureName);
-        cucuScenario.setFeatureDescription(featureDescription);
+        List<Map<Object, Object>> gherkinDocumentFeatureChildren
+                = (List<Map<Object, Object>>) gherkinDocumentFeature.get("children");
 
-        for (Map<Object, Object> testStep : testSteps) {
-            CucuStep cucuStep = new CucuStep();
-            String id = (String) testStep.get("id");
-            Instant cucuStepStartTime = Instant.ofEpochSecond(
-                    ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepStartedUsingTestStepId(id)
-                            .get("timestamp")).get("seconds")).longValue(),
-                    ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepStartedUsingTestStepId(id)
-                            .get("timestamp")).get("nanos")).longValue()
-            );
-            Instant cucuStepEndTime = Instant.ofEpochSecond(
-                    ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepFinishedUsingTestStepId(id)
-                            .get("timestamp")).get("seconds")).longValue(),
-                    ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepFinishedUsingTestStepId(id)
-                            .get("timestamp")).get("nanos")).longValue()
-            );
-            cucuStep.setStartTime(cucuStepStartTime);
-            cucuStep.setEndTime(cucuStepEndTime);
-            cucuStep.setDuration(Duration.between(cucuStepStartTime, cucuStepEndTime));
-            if (testStep.containsKey("hookId")) {
-                String hookId = (String) testStep.get("hookId");
-                Map<Object, Object> hook = cucuNdJson.getHookUsingId(hookId);
-                String hookType = hook.get("type").toString();
-                cucuStep.setStepType(hookType);
-            } else if (testStep.containsKey("pickleStepId")) {
-                Map<Object, Object> attachment = cucuNdJson.getAttachmentUsingTestStepId(id);
-                cucuStep.setAttachmentContentEncoding(attachment.get("contentEncoding").toString());
-                cucuStep.setAttachmentMediaType(attachment.get("mediaType").toString());
-                cucuStep.setAttachmentBody(attachment.get("body").toString());
+        List<Map<Object, Object>> gherkinDocumentFeatureChildrenScenario = new ArrayList<>();
 
-                String pickleStepId = (String) testStep.get("pickleStepId");
+        // Finding background from gherkinDocument's feature children then creating new map
+        if (gherkinDocumentFeatureChildren.get(0).containsKey("background")) {
+            Map<Object, Object> gherkinDocumentFeatureChildrenBackground
+                    = (Map<Object, Object>) gherkinDocumentFeatureChildren.get(0).get("background");
+            String gherkinDocumentFeatureChildrenBackgroundId = gherkinDocumentFeatureChildrenBackground.get("id").toString();
+            mavenLog.debug("Background id for test case in gherkin document: "
+                    + gherkinDocumentFeatureChildrenBackgroundId);
+            gherkinDocumentFeatureChildrenScenario.add(gherkinDocumentFeatureChildrenBackground);
+        }
 
-                Map<Object, Object> pickleStep = ((LinkedList<Map<Object, Object>>) pickle.get("steps")).stream()
-                        .filter(step -> step.get("id").toString().equals(pickleStepId))
-                        .findFirst().orElse(null);
-                String[] astNodeIds = (String[]) pickleStep.get("astNodeIds");
-                if(astNodeIds.length>1) {
-                    cucuScenario.setScenarioType("Scenario Outline");
+        // Finding scenario from gherkinDocument's feature children then creating new map
+        for (Map<Object, Object> featureChild : gherkinDocumentFeatureChildren) {
+            if (featureChild.containsKey("scenario")
+                    && ((Map<Object, Object>) featureChild.get("scenario")).get("id").toString()
+                    .equals(gherkinDocumentFeatureChildrenScenarioId)) {
+                Map<Object, Object> scenario = (Map<Object, Object>) featureChild.get("scenario");
+                mavenLog.debug("Scenario id in gherkin document for test case: "
+                        + gherkinDocumentFeatureChildrenScenarioId);
+                gherkinDocumentFeatureChildrenScenario.add(scenario);
+
+                // Setting scenario type, name, description from gherkinDocument's scenario
+                cucuScenario.setScenarioType(switch (scenario.get("keyword").toString()) {
+                    case "Scenario Outline" -> CucScenarioType.SCENARIO_OUTLINE;
+                    case "Scenario" -> CucScenarioType.SCENARIO;
+                    default -> throw new RuntimeException("Unknown scenario keyword: " + scenario.get("keyword"));
+                });
+                cucuScenario.setScenarioName(scenario.get("name").toString());
+                cucuScenario.setScenarioDescription(scenario.get("description").toString());
+
+                if (cucuScenario.getScenarioType() == CucScenarioType.SCENARIO_OUTLINE) {
+                    // Setting example values for scenario outline
+                    mavenLog.debug(gherkinDocumentFeatureChildrenScenarioId + " is a Scenario Outline.");
+                    Map<Object, Object> example = ((List<Map<Object, Object>>) scenario.get("examples")).get(0);
+                    List<String> headers = new ArrayList<>();
+                    for (Map<Object, Object> cell : (List<Map<Object, Object>>) ((Map<Object, Object>) example
+                            .get("tableHeader")).get("cells")) {
+                        headers.add(cell.get("value").toString());
+                    }
+                    cucuScenario.setExampleRowsHeaders(headers);
+                    List<Map<Object, Object>> tableBodyRows
+                            = (List<Map<Object, Object>>) example.get("tableBody");
+                    String exampleId = pickleAstNodeIds.get(1);
+                    mavenLog.debug("Example id for scenario outline: " + exampleId);
+                    Map<Object, Object> tableBodyRow = null;
+                    for (Map<Object, Object> row : tableBodyRows) {
+                        String rowId = row.get("id").toString();
+                        mavenLog.debug("Example Row ID: " + rowId + ", Pickle Example ID: " + exampleId);
+                        if (rowId.equals(exampleId)) {
+                            tableBodyRow = row;
+                            break;
+                        }
+                    }
+                    List<String> rows = new ArrayList<>();
+                    if (Objects.isNull(tableBodyRow)) {
+                        throw new RuntimeException("Example row not found for scenario: "
+                                + cucuScenario.getScenarioName());
+                    } else {
+                        for (Map<Object, Object> cell : (List<Map<Object, Object>>) tableBodyRow.get("cells")) {
+                            rows.add(cell.get("value").toString());
+                        }
+                    }
+                    cucuScenario.setExampleRowsValues(rows);
                 }
-                feature.get("children")
-            } else {
-                mavenLog.warn("Unknown test step type in test case id: " + testCaseId);
+                mavenLog.debug(cucuScenario.getScenarioType()
+                        + " data pulled from gherkin document with id: "
+                        + gherkinDocumentFeatureChildrenScenarioId);
+                break;
             }
         }
 
+        // Setting feature file path, name, description
+        cucuScenario.setFeatureFilePath(pickle.get("uri").toString());
+        cucuScenario.setFeatureName(gherkinDocumentFeature.get("name").toString());
+        cucuScenario.setFeatureDescription(gherkinDocumentFeature.get("description").toString());
 
-        mavenLog.info("Transformed Cucu Scenario: \n" + cucuScenario);
+        // Setting scenario tags if present
+        if (pickle.get("tags") != null) {
+            cucuScenario.setScenarioTags(((ArrayList<Map<Object, Object>>) pickle.get("tags")).stream()
+                    .map(tagMap -> tagMap.get("name").toString())
+                    .collect(ArrayList::new, ArrayList::add, ArrayList::addAll));
+        }
+
+        // Setting start time, end time and duration of scenario
+        Map<Object, Object> testCaseStarted = cucuNdJson.getTestCaseStartedUsingTestCaseId(testCaseId);
+        String testCaseStartedId = (String) testCaseStarted.get("id");
+        mavenLog.debug("Test case started id: " + testCaseStartedId);
+        Map<Object, Object> testCaseFinished = cucuNdJson.getTestCaseFinishedUsingTestCaseStartedId(testCaseStartedId);
+        cucuScenario.setStartTime(Instant.ofEpochSecond(
+                ((Integer) ((Map<Object, Object>) testCaseStarted.get("timestamp")).get("seconds")).longValue(),
+                ((Integer) ((Map<Object, Object>) testCaseStarted.get("timestamp")).get("nanos")).longValue()
+        ));
+        cucuScenario.setEndTime(Instant.ofEpochSecond(
+                ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("seconds")).longValue(),
+                ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("nanos")).longValue()
+        ));
+        cucuScenario.setDuration(Duration.between(
+                cucuScenario.getStartTime(), cucuScenario.getEndTime()
+        ));
+
+        // Processing each test step
+        for (Map<Object, Object> testStep : testSteps) {
+            CucuStep cucuStep = new CucuStep();
+            String id = (String) testStep.get("id");
+            mavenLog.debug("Processing for test step id: " + id);
+
+            Map<Object, Object> testStepFinished = cucuNdJson.getTestStepFinishedUsingTestStepId(id);
+            Map<Object, Object> testStepResult = (Map<Object, Object>) testStepFinished.get("testStepResult");
+            Map<Object, Object> attachment = cucuNdJson.getAttachmentUsingTestStepId(id);
+
+            // Setting start time, end time, duration, status, message, exception and attachment of step
+            cucuStep.setStartTime(Instant.ofEpochSecond(
+                    ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepStartedUsingTestStepId(id)
+                            .get("timestamp")).get("seconds")).longValue(),
+                    ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepStartedUsingTestStepId(id)
+                            .get("timestamp")).get("nanos")).longValue()
+            ));
+            cucuStep.setEndTime(Instant.ofEpochSecond(
+                    ((Integer) ((Map<Object, Object>) testStepFinished.get("timestamp")).get("seconds")).longValue(),
+                    ((Integer) ((Map<Object, Object>) testStepFinished.get("timestamp")).get("nanos")).longValue()
+            ));
+            cucuStep.setDuration(Duration.between(
+                    cucuStep.getStartTime(), cucuStep.getEndTime()
+            ));
+            cucuStep.setStatus(switch (testStepResult.get("status").toString()) {
+                case "PASSED" -> CucStepStatus.PASS;
+                case "FAILED" -> CucStepStatus.FAIL;
+                default -> CucStepStatus.SKIP;
+            });
+            if (!Objects.isNull(testStepResult.get("message"))) {
+                cucuStep.setMessage(testStepResult.get("message").toString());
+            }
+            if (!Objects.isNull(testStepResult.get("exception"))) {
+                cucuStep.setException(testStepResult.get("exception").toString());
+            }
+            if (!Objects.isNull(attachment)) {
+                cucuStep.setAttachmentContentEncoding(attachment.get("contentEncoding").toString());
+                cucuStep.setAttachmentMediaType(attachment.get("mediaType").toString());
+                cucuStep.setAttachmentBody(attachment.get("body").toString());
+            }
+            if (testStep.containsKey("hookId")) {
+                String hookId = (String) testStep.get("hookId");
+                mavenLog.debug("Test step is hook with id: " + hookId);
+                Map<Object, Object> hook = cucuNdJson.getHookUsingId(hookId);
+                String hookType = hook.get("type").toString();
+                cucuStep.setStepType(switch (hook.get("type").toString()) {
+                    case "BEFORE_TEST_CASE" -> CucStepType.BEFORE_SCENARIO_HOOK;
+                    case "AFTER_TEST_CASE" -> CucStepType.AFTER_SCENARIO_HOOK;
+                    case "BEFORE_TEST_STEP" -> CucStepType.BEFORE_STEP_HOOK;
+                    case "AFTER_TEST_STEP" -> CucStepType.AFTER_STEP_HOOK;
+                    default -> throw new RuntimeException("Unknown hook type: " + hookType);
+                });
+            } else if (testStep.containsKey("pickleStepId")) {
+                String pickleStepId = (String) testStep.get("pickleStepId");
+                mavenLog.debug("Step is pickle step with id: " + pickleStepId);
+                Map<Object, Object> pickleStep = ((ArrayList<Map<Object, Object>>) pickle.get("steps")).stream()
+                        .filter(step -> step.get("id").toString().equals(pickleStepId))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Pickle step not found for id: " + pickleStepId));
+                String pickleStepAstNodeId = ((ArrayList<String>) pickleStep.get("astNodeIds")).get(0);
+                mavenLog.debug("Pickle step ast node id: " + pickleStepAstNodeId);
+                gherkinFor:
+                for (Map<Object, Object> gherkinDocumentFeatureChildrenScenarioChildren :
+                        gherkinDocumentFeatureChildrenScenario) {
+                    List<Map<Object, Object>> steps
+                            = (List<Map<Object, Object>>) gherkinDocumentFeatureChildrenScenarioChildren.get("steps");
+                    for (Map<Object, Object> step : steps) {
+                        if (step.get("id").toString().equals(pickleStepAstNodeId)) {
+                            mavenLog.debug("Pickle step ast node id and" +
+                                    "gherkin document scenario step matched");
+                            String stepKeyword = step.get("keyword").toString();
+                            cucuStep.setStepText(step.get("text").toString());
+                            cucuStep.setStepType(switch (stepKeyword.trim()) {
+                                case "Given" -> CucStepType.GIVEN;
+                                case "When" -> CucStepType.WHEN;
+                                case "Then" -> CucStepType.THEN;
+                                case "And" -> CucStepType.AND;
+                                case "But" -> CucStepType.BUT;
+                                default -> throw new RuntimeException("Unknown step keyword: " + stepKeyword);
+                            });
+                            if (!Objects.isNull(step.get("docString"))) {
+                                Map<Object, Object> docString
+                                        = (Map<Object, Object>) step.get("docString");
+                                cucuStep.setDocStringContent(docString.get("content").toString());
+                                cucuStep.setDocStringDelimiter(docString.get("delimiter").toString());
+                                if (!Objects.isNull(docString.get("mediaType"))) {
+                                    cucuStep.setDocStringMediaType(docString.get("mediaType").toString());
+                                }
+                            }
+                            if (!Objects.isNull(step.get("dataTable"))) {
+                                List<Map<Object, Object>> dataTableRows
+                                        = (List<Map<Object, Object>>) ((Map<Object, Object>) step.get("dataTable"))
+                                        .get("rows");
+                                List<List<String>> rows = new ArrayList<>();
+                                for (Map<Object, Object> row : dataTableRows) {
+                                    List<String> rowCells = new ArrayList<>();
+                                    List<Map<Object, Object>> dataTableCells
+                                            = (List<Map<Object, Object>>) row.get("cells");
+                                    for (Map<Object, Object> cell : dataTableCells) {
+                                        rowCells.add(cell.get("value").toString());
+                                    }
+                                    rows.add(rowCells);
+                                }
+                                cucuStep.setDataTableRows(rows);
+                            }
+                            cucuScenario.getSteps().add(cucuStep);
+                            break gherkinFor;
+                        }
+                    }
+                }
+            } else {
+                throw new RuntimeException("Unknown test step type in test step id: " + id);
+            }
+            mavenLog.debug("Processing done for test step id: " + id);
+        }
+
+        mavenLog.debug("Processing done for test case id: " + testCaseId);
+        mavenLog.info("Transformed Cucu Scenario: " + cucuScenario.getScenarioName());
         return cucuScenario;
     }
-
 }
