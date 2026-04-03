@@ -3,14 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.cucu</groupId>
+    <groupId>com.techstacklearning</groupId>
     <artifactId>cucu-suite</artifactId>
-    <version>25.10.19-RELEASE</version>
-    <packaging>pom</packaging> <!-- Important: packaging type is 'pom' for parent -->
+    <version>26.4.3-RELEASE</version>
+    <packaging>pom</packaging>
 
     <modules>
-        <module>cucu-test</module>
-        <module>cucu-report</module>
+        <module>cucu-test-automation</module>
+        <module>cucu-report-plugin</module>
     </modules>
 
 </project>
