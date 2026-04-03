@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
@@ -76,6 +78,8 @@ public class CucuTransformer {
     CucuScenario transformTestCaseToCucuScenario(Map<Object, Object> testCase) {
         mavenLog.info("Transforming Cucu NdJson Test Case to Cucu Scenario.");
 
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         CucuScenario cucuScenario = new CucuScenario();
 
         String testCaseId = (String) testCase.get("id");
@@ -117,14 +121,14 @@ public class CucuTransformer {
 
                 // Setting scenario type, name, description from gherkinDocument's scenario
                 cucuScenario.setScenarioType(switch (scenario.get("keyword").toString()) {
-                    case "Scenario Outline" -> CucScenarioType.SCENARIO_OUTLINE;
-                    case "Scenario" -> CucScenarioType.SCENARIO;
+                    case "Scenario Outline" -> CucScenarioType.SCENARIO_OUTLINE.getType();
+                    case "Scenario" -> CucScenarioType.SCENARIO.getType();
                     default -> throw new RuntimeException("Unknown scenario keyword: " + scenario.get("keyword"));
                 });
                 cucuScenario.setScenarioName(scenario.get("name").toString());
                 cucuScenario.setScenarioDescription(scenario.get("description").toString());
 
-                if (cucuScenario.getScenarioType() == CucScenarioType.SCENARIO_OUTLINE) {
+                if (cucuScenario.getScenarioType().equals(CucScenarioType.SCENARIO_OUTLINE.getType())) {
                     // Setting example values for scenario outline
                     mavenLog.debug(gherkinDocumentFeatureChildrenScenarioId + " is a Scenario Outline.");
                     Map<Object, Object> example = ((List<Map<Object, Object>>) scenario.get("examples")).get(0);
@@ -182,17 +186,18 @@ public class CucuTransformer {
         String testCaseStartedId = (String) testCaseStarted.get("id");
         mavenLog.debug("Test case started id: " + testCaseStartedId);
         Map<Object, Object> testCaseFinished = cucuNdJson.getTestCaseFinishedUsingTestCaseStartedId(testCaseStartedId);
-        cucuScenario.setStartTime(Instant.ofEpochSecond(
+        Instant startInstant = Instant.ofEpochSecond(
                 ((Integer) ((Map<Object, Object>) testCaseStarted.get("timestamp")).get("seconds")).longValue(),
                 ((Integer) ((Map<Object, Object>) testCaseStarted.get("timestamp")).get("nanos")).longValue()
-        ));
-        cucuScenario.setEndTime(Instant.ofEpochSecond(
+        );
+        Instant endInstant = Instant.ofEpochSecond(
                 ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("seconds")).longValue(),
                 ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("nanos")).longValue()
-        ));
-        cucuScenario.setDuration(Duration.between(
-                cucuScenario.getStartTime(), cucuScenario.getEndTime()
-        ));
+        );
+        cucuScenario.setStartTime(startInstant.atZone(ZoneId.systemDefault()).format(formatter));
+        cucuScenario.setEndTime(endInstant.atZone(ZoneId.systemDefault()).format(formatter));
+        cucuScenario.setDurationInSeconds(String.format("%s seconds",
+                Duration.between(startInstant, endInstant).getSeconds()));
 
         // Processing each test step
         for (Map<Object, Object> testStep : testSteps) {
@@ -202,27 +207,31 @@ public class CucuTransformer {
 
             Map<Object, Object> testStepFinished = cucuNdJson.getTestStepFinishedUsingTestStepId(id);
             Map<Object, Object> testStepResult = (Map<Object, Object>) testStepFinished.get("testStepResult");
+            String testStepResultStatus = testStepResult.get("status").toString();
             Map<Object, Object> attachment = cucuNdJson.getAttachmentUsingTestStepId(id);
 
             // Setting start time, end time, duration, status, message, exception and attachment of step
-            cucuStep.setStartTime(Instant.ofEpochSecond(
+            Instant stepStartInstant = Instant.ofEpochSecond(
                     ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepStartedUsingTestStepId(id)
                             .get("timestamp")).get("seconds")).longValue(),
                     ((Integer) ((Map<Object, Object>) cucuNdJson.getTestStepStartedUsingTestStepId(id)
                             .get("timestamp")).get("nanos")).longValue()
-            ));
-            cucuStep.setEndTime(Instant.ofEpochSecond(
+            );
+            Instant stepEndInstant = Instant.ofEpochSecond(
                     ((Integer) ((Map<Object, Object>) testStepFinished.get("timestamp")).get("seconds")).longValue(),
                     ((Integer) ((Map<Object, Object>) testStepFinished.get("timestamp")).get("nanos")).longValue()
-            ));
-            cucuStep.setDuration(Duration.between(
-                    cucuStep.getStartTime(), cucuStep.getEndTime()
-            ));
-            cucuStep.setStatus(switch (testStepResult.get("status").toString()) {
-                case "PASSED" -> CucStepStatus.PASS;
-                case "FAILED" -> CucStepStatus.FAIL;
-                default -> CucStepStatus.SKIP;
+            );
+            cucuStep.setStartTime(stepStartInstant.atZone(ZoneId.systemDefault()).format(formatter));
+            cucuStep.setEndTime(stepEndInstant.atZone(ZoneId.systemDefault()).format(formatter));
+            cucuStep.setDurationInSeconds(String.format("%s seconds",
+                    Duration.between(stepStartInstant, stepEndInstant).getSeconds()));
+            cucuStep.setStatus(switch (testStepResultStatus) {
+                case "PASSED" -> CucStepStatus.PASS.getStatus();
+                case "FAILED" -> CucStepStatus.FAIL.getStatus();
+                default -> CucStepStatus.SKIP.getStatus();
             });
+            cucuScenario.setStatus(testStepResultStatus.equals("PASSED") ?
+                    CucScenarioStatus.PASS.getStatus() : CucScenarioStatus.FAIL.getStatus());
             if (!Objects.isNull(testStepResult.get("message"))) {
                 cucuStep.setMessage(testStepResult.get("message").toString());
             }

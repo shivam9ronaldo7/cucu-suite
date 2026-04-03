@@ -12,9 +12,9 @@ public class CucuStep {
     private CucStepType stepType;
     private String stepText;
 
-    private Instant startTime;
-    private Instant endTime;
-    private Duration duration;
+    private String startTime;
+    private String endTime;
+    private String durationInSeconds;
 
     private String message;
     private String exception;
@@ -29,6 +29,6 @@ public class CucuStep {
     private String attachmentContentEncoding;
     private String attachmentMediaType;
 
-    private CucStepStatus status;
+    private String status;
 
 }

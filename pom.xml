@@ -11,8 +11,6 @@
     <modules>
         <module>cucu-test</module>
         <module>cucu-report</module>
-        <module>cucu-api</module>
-        <module>cucu-ui</module>
     </modules>
 
 </project>
