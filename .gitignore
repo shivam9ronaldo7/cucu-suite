@@ -5,6 +5,8 @@
 /src/test/javascript/coverage/
 /src/test/javascript/PhantomJS*/
 
+/cucu-report-react/build/
+
 ######################
 # Node
 ######################
@@ -12,6 +14,11 @@
 node_tmp/
 node_modules/
 npm-debug.log.*
+
+/cucu-report-react/node/
+/cucu-report-react/node_tmp/
+/cucu-report-reactnode_modules/
+/cucu-report-react/npm-debug.log.*
 
 ######################
 # SASS
@@ -63,6 +70,7 @@ local.properties
 # Visual Studio Code
 ######################
 .vscode/
+/cucu-report-react/.vscode/
 
 ######################
 # Maven
