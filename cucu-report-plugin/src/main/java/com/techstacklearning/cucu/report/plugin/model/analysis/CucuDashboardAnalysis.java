@@ -3,8 +3,8 @@ package com.techstacklearning.cucu.report.plugin.model.analysis;
 public class CucuDashboardAnalysis {
     String suiteStartTime;
     String suiteEndTime;
-    long passedScenarios;
-    long failedScenarios;
+    long totalPassedScenarios;
+    long totalFailedScenarios;
     long totalScenarios;
     long totalDurationInSeconds;
     public record featureAnalysis(String featureName, long passedScenarios,

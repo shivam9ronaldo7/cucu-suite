@@ -1,8 +1,18 @@
 window.CUCUMBER_DASHOARD_DATA = {
+  suiteStartTime: "2026-01-23 09:55:50",
+  suiteEndTime: "2026-01-23 09:57:50",
   totalPassScenario: 5,
   totalFailScenario: 2,
-  totalScenario: 2,
-  
+  totalScenario: 7,
+  featureAnalysis: [
+    {
+      featureName: "Title of your feature2",
+      totalPassScenario: 3,
+      totalFailScenario: 1,
+      totalScenario: 4,
+      durationInSeconds: 0
+    },
+  ],
 };
 window.CUCUMBER_REPORT_DATA = [
   {
@@ -106,7 +116,7 @@ window.CUCUMBER_REPORT_DATA = [
     ],
     startTime: "2026-01-23 09:55:50",
     endTime: "2026-01-23 09:55:50",
-    durationInSeconds: "0 seconds",
+    durationInSeconds: 0,
     status: "Pass",
   },
   {
@@ -168,7 +178,7 @@ window.CUCUMBER_REPORT_DATA = [
     exampleRowsValues: ["name1", "5", "success"],
     startTime: "2026-01-23 09:55:50",
     endTime: "2026-01-23 09:55:50",
-    durationInSeconds: "0 seconds",
+    durationInSeconds: 0,
     status: "Pass",
   },
   {
@@ -221,7 +231,7 @@ window.CUCUMBER_REPORT_DATA = [
     exampleRowsValues: ["name2", "7", "Fail"],
     startTime: "2026-01-23 09:55:50",
     endTime: "2026-01-23 09:55:50",
-    durationInSeconds: "0 seconds",
+    durationInSeconds: 0,
     status: "Pass",
   },
   {
@@ -264,8 +274,8 @@ window.CUCUMBER_REPORT_DATA = [
     ],
     startTime: "2026-01-23 09:55:50",
     endTime: "2026-01-23 09:55:50",
-    durationInSeconds: "0 seconds",
-    status: "Pass",
+    durationInSeconds: 0,
+    status: "Fail",
   },
   {
     featureFilePath:
@@ -305,7 +315,7 @@ window.CUCUMBER_REPORT_DATA = [
     ],
     startTime: "2026-01-23 09:56:35",
     endTime: "2026-01-23 09:56:35",
-    durationInSeconds: "0 seconds",
+    durationInSeconds: 0,
     status: "Pass",
   },
   {
@@ -346,7 +356,7 @@ window.CUCUMBER_REPORT_DATA = [
     ],
     startTime: "2026-01-23 09:56:35",
     endTime: "2026-01-23 09:56:35",
-    durationInSeconds: "0 seconds",
+    durationInSeconds: 0,
     status: "Pass",
   },
   {
@@ -387,7 +397,7 @@ window.CUCUMBER_REPORT_DATA = [
     ],
     startTime: "2026-01-23 09:56:35",
     endTime: "2026-01-23 09:56:35",
-    durationInSeconds: "0 seconds",
-    status: "Pass",
+    durationInSeconds: 0,
+    status: "Fail",
   },
 ];
