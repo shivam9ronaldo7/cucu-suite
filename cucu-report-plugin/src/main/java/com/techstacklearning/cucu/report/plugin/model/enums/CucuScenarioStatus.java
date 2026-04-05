@@ -1,15 +1,15 @@
-package com.techstacklearning.cucu.report.plugin.model;
+package com.techstacklearning.cucu.report.plugin.model.enums;
 
 import lombok.Getter;
 
 @Getter
-public enum CucScenarioStatus {
+public enum CucuScenarioStatus {
     PASS("Pass"),
     FAIL("Fail");
 
     private final String status;
 
-    CucScenarioStatus(String status) {
+    CucuScenarioStatus(String status) {
         this.status = status;
     }
 

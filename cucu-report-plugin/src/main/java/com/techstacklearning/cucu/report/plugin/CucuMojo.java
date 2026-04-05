@@ -1,5 +1,6 @@
 package com.techstacklearning.cucu.report.plugin;
 
+import com.techstacklearning.cucu.report.plugin.model.transformer.CucuScenario;
 import lombok.SneakyThrows;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -12,6 +13,7 @@ import org.apache.maven.project.MavenProject;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.File;
+import java.util.ArrayList;
 
 @Mojo(
         name = "execute",
@@ -70,7 +72,8 @@ public class CucuMojo extends AbstractMojo {
         context.getBeanFactory().registerSingleton("mavenSession", session);
         context.getBeanFactory().registerSingleton("mavenLog", mavenLog);
         context.refresh();
-        context.getBean(CucuTransformer.class).transform(ndjsonArr);
+        ArrayList<CucuScenario> cucuScenarioList = context.getBean(CucuTransformer.class).transform(ndjsonArr);
+        context.getBean(CucuAnalysis.class).analyze(cucuScenarioList);
         context.close();
         mavenLog.info("CucuMojo execution completed.");
     }

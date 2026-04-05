@@ -1,15 +1,15 @@
-package com.techstacklearning.cucu.report.plugin.model;
+package com.techstacklearning.cucu.report.plugin.model.enums;
 
 import lombok.Getter;
 
 @Getter
-public enum CucCommon {
+public enum CucuCommon {
     FEATURE("Feature"),
     EXAMPLE("Example");
 
     private final String status;
 
-    CucCommon(String status) {
+    CucuCommon(String status) {
         this.status = status;
     }
 

@@ -1,5 +1,6 @@
-package com.techstacklearning.cucu.report.plugin.model;
+package com.techstacklearning.cucu.report.plugin.model.transformer;
 
+import com.techstacklearning.cucu.report.plugin.model.enums.CucuStepType;
 import lombok.Data;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 @Data
 public class CucuStep {
 
-    private CucStepType stepType;
+    private CucuStepType stepType;
     private String stepText;
 
     private String startTime;

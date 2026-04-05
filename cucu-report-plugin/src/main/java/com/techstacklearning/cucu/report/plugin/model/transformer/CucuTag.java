@@ -1,4 +1,4 @@
-package com.techstacklearning.cucu.report.plugin.model;
+package com.techstacklearning.cucu.report.plugin.model.transformer;
 
 import java.util.ArrayList;
 

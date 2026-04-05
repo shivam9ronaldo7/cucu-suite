@@ -1,9 +1,9 @@
-package com.techstacklearning.cucu.report.plugin.model;
+package com.techstacklearning.cucu.report.plugin.model.enums;
 
 import lombok.Getter;
 
 @Getter
-public enum CucStepType {
+public enum CucuStepType {
     GIVEN("Given"),
     WHEN("When"),
     THEN("Then"),
@@ -21,7 +21,7 @@ public enum CucStepType {
 
     private final String stepType;
 
-    CucStepType(String stepType) {
+    CucuStepType(String stepType) {
         this.stepType = stepType;
     }
 

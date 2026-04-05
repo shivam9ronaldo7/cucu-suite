@@ -1,9 +1,12 @@
 package com.techstacklearning.cucu.report.plugin;
 
-import com.cucu.report.plugin.model.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techstacklearning.cucu.report.plugin.model.*;
+import com.techstacklearning.cucu.report.plugin.model.transformer.*;
+import com.techstacklearning.cucu.report.plugin.model.enums.CucuScenarioStatus;
+import com.techstacklearning.cucu.report.plugin.model.enums.CucuScenarioType;
+import com.techstacklearning.cucu.report.plugin.model.enums.CucuStepStatus;
+import com.techstacklearning.cucu.report.plugin.model.enums.CucuStepType;
 import org.apache.maven.plugin.logging.Log;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +33,7 @@ public class CucuTransformer {
         this.objectMapper = objectMapper;
     }
 
-    void transform(File[] ndjsonArr) throws IOException {
+    ArrayList<CucuScenario> transform(File[] ndjsonArr) throws IOException {
         String[] names = Arrays.stream(ndjsonArr).map(File::getName).toArray(String[]::new);
         mavenLog.info("Found " + ndjsonArr.length + " .ndjson file(s): " + Arrays.toString(names));
         for (File file : ndjsonArr) {
@@ -45,8 +48,9 @@ public class CucuTransformer {
         }
         mavenLog.info("Transformation complete. Total Cucu Scenarios transformed: "
                 + cucuScenarioList.size());
-        mavenLog.info("Cucu Scenarios: \n"
-                + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(cucuScenarioList));
+//        mavenLog.info("Cucu Scenarios: \n"
+//                + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(cucuScenarioList));
+        return cucuScenarioList;
     }
 
     CucuNdJson transformNdJsonToCucuNdJson(File ndJson) throws IOException {
@@ -122,14 +126,14 @@ public class CucuTransformer {
 
                 // Setting scenario type, name, description from gherkinDocument's scenario
                 cucuScenario.setScenarioType(switch (scenario.get("keyword").toString()) {
-                    case "Scenario Outline" -> CucScenarioType.SCENARIO_OUTLINE.getType();
-                    case "Scenario" -> CucScenarioType.SCENARIO.getType();
+                    case "Scenario Outline" -> CucuScenarioType.SCENARIO_OUTLINE.getType();
+                    case "Scenario" -> CucuScenarioType.SCENARIO.getType();
                     default -> throw new RuntimeException("Unknown scenario keyword: " + scenario.get("keyword"));
                 });
                 cucuScenario.setScenarioName(scenario.get("name").toString());
                 cucuScenario.setScenarioDescription(scenario.get("description").toString());
 
-                if (cucuScenario.getScenarioType().equals(CucScenarioType.SCENARIO_OUTLINE.getType())) {
+                if (cucuScenario.getScenarioType().equals(CucuScenarioType.SCENARIO_OUTLINE.getType())) {
                     // Setting example values for scenario outline
                     mavenLog.debug(gherkinDocumentFeatureChildrenScenarioId + " is a Scenario Outline.");
                     Map<Object, Object> example = ((List<Map<Object, Object>>) scenario.get("examples")).get(0);
@@ -195,10 +199,9 @@ public class CucuTransformer {
                 ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("seconds")).longValue(),
                 ((Integer) ((Map<Object, Object>) testCaseFinished.get("timestamp")).get("nanos")).longValue()
         );
-        cucuScenario.setStartTime(startInstant.atZone(ZoneId.systemDefault()).format(formatter));
-        cucuScenario.setEndTime(endInstant.atZone(ZoneId.systemDefault()).format(formatter));
-        cucuScenario.setDurationInSeconds(String.format("%s seconds",
-                Duration.between(startInstant, endInstant).getSeconds()));
+        cucuScenario.setStartTime(startInstant);
+        cucuScenario.setEndTime(endInstant);
+        cucuScenario.setDurationInSeconds(Duration.between(startInstant, endInstant).getSeconds());
 
         // Processing each test step
         for (Map<Object, Object> testStep : testSteps) {
@@ -227,12 +230,12 @@ public class CucuTransformer {
             cucuStep.setDurationInSeconds(String.format("%s seconds",
                     Duration.between(stepStartInstant, stepEndInstant).getSeconds()));
             cucuStep.setStatus(switch (testStepResultStatus) {
-                case "PASSED" -> CucStepStatus.PASS.getStatus();
-                case "FAILED" -> CucStepStatus.FAIL.getStatus();
-                default -> CucStepStatus.SKIP.getStatus();
+                case "PASSED" -> CucuStepStatus.PASS.getStatus();
+                case "FAILED" -> CucuStepStatus.FAIL.getStatus();
+                default -> CucuStepStatus.SKIP.getStatus();
             });
             cucuScenario.setStatus(testStepResultStatus.equals("PASSED") ?
-                    CucScenarioStatus.PASS.getStatus() : CucScenarioStatus.FAIL.getStatus());
+                    CucuScenarioStatus.PASS.getStatus() : CucuScenarioStatus.FAIL.getStatus());
             if (!Objects.isNull(testStepResult.get("message"))) {
                 cucuStep.setMessage(testStepResult.get("message").toString());
             }
@@ -250,10 +253,10 @@ public class CucuTransformer {
                 Map<Object, Object> hook = cucuNdJson.getHookUsingId(hookId);
                 String hookType = hook.get("type").toString();
                 cucuStep.setStepType(switch (hook.get("type").toString()) {
-                    case "BEFORE_TEST_CASE" -> CucStepType.BEFORE_SCENARIO_HOOK;
-                    case "AFTER_TEST_CASE" -> CucStepType.AFTER_SCENARIO_HOOK;
-                    case "BEFORE_TEST_STEP" -> CucStepType.BEFORE_STEP_HOOK;
-                    case "AFTER_TEST_STEP" -> CucStepType.AFTER_STEP_HOOK;
+                    case "BEFORE_TEST_CASE" -> CucuStepType.BEFORE_SCENARIO_HOOK;
+                    case "AFTER_TEST_CASE" -> CucuStepType.AFTER_SCENARIO_HOOK;
+                    case "BEFORE_TEST_STEP" -> CucuStepType.BEFORE_STEP_HOOK;
+                    case "AFTER_TEST_STEP" -> CucuStepType.AFTER_STEP_HOOK;
                     default -> throw new RuntimeException("Unknown hook type: " + hookType);
                 });
             } else if (testStep.containsKey("pickleStepId")) {
@@ -277,11 +280,11 @@ public class CucuTransformer {
                             String stepKeyword = step.get("keyword").toString();
                             cucuStep.setStepText(step.get("text").toString());
                             cucuStep.setStepType(switch (stepKeyword.trim()) {
-                                case "Given" -> CucStepType.GIVEN;
-                                case "When" -> CucStepType.WHEN;
-                                case "Then" -> CucStepType.THEN;
-                                case "And" -> CucStepType.AND;
-                                case "But" -> CucStepType.BUT;
+                                case "Given" -> CucuStepType.GIVEN;
+                                case "When" -> CucuStepType.WHEN;
+                                case "Then" -> CucuStepType.THEN;
+                                case "And" -> CucuStepType.AND;
+                                case "But" -> CucuStepType.BUT;
                                 default -> throw new RuntimeException("Unknown step keyword: " + stepKeyword);
                             });
                             if (!Objects.isNull(step.get("docString"))) {

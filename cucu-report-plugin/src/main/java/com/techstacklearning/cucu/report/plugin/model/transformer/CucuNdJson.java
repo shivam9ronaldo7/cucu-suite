@@ -1,10 +1,8 @@
-package com.techstacklearning.cucu.report.plugin.model;
+package com.techstacklearning.cucu.report.plugin.model.transformer;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Map;
 
