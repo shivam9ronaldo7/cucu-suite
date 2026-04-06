@@ -1,16 +1,47 @@
-window.CUCUMBER_DASHOARD_DATA = {
+window.CUCUMBER_DASHBOARD_DATA = {
   suiteStartTime: "2026-01-23 09:55:50",
   suiteEndTime: "2026-01-23 09:57:50",
   totalPassScenario: 5,
   totalFailScenario: 2,
   totalScenario: 7,
+  totalDurationInSeconds: 2,
   featureAnalysis: [
     {
       featureName: "Title of your feature2",
       totalPassScenario: 3,
       totalFailScenario: 1,
       totalScenario: 4,
-      durationInSeconds: 0
+      durationInSeconds: 10
+    },
+    {
+      featureName: "Title of your feature2",
+      totalPassScenario: 1,
+      totalFailScenario: 1,
+      totalScenario: 3,
+      durationInSeconds: 13
+    },
+  ],
+  tagAnalysis: [
+    {
+      tagName: "@test",
+      totalPassScenario: 3,
+      totalFailScenario: 1,
+      totalScenario: 4,
+      durationInSeconds: 10
+    },
+    {
+      tagName: "@tag1.1",
+      totalPassScenario: 3,
+      totalFailScenario: 1,
+      totalScenario: 4,
+      durationInSeconds: 10
+    },
+    {
+      tagName: "@tag1.2",
+      totalPassScenario: 1,
+      totalFailScenario: 1,
+      totalScenario: 3,
+      durationInSeconds: 13
     },
   ],
 };

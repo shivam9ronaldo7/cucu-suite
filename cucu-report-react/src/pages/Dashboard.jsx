@@ -1,30 +1,15 @@
-import { useMemo } from "react";
-import SummaryCards from "../components/dashboard/SummaryCards";
-import StatusChart from "../components/dashboard/StatusChart";
+import Layout from "../components/common/Layout";
+import { Box } from '@mui/material';
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 
 export default function Dashboard() {
-  const summary = useMemo(() => {
-    const data = window.CUCUMBER_REPORT_DATA || [];
-    let total = 0,
-      passed = 0,
-      failed = 0;
-
-    data.forEach((f) =>
-      f.elements.forEach((s) => {
-        total++;
-        s.steps.some((st) => st.result.status === "failed")
-          ? failed++
-          : passed++;
-      }),
-    );
-
-    return { total, passed, failed };
-  }, []);
-
+  const data = window.CUCUMBER_DASHBOARD_DATA || [];
   return (
-    <>
-      <SummaryCards summary={summary} />
-      <StatusChart summary={summary} />
-    </>
+    <Layout>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Typography variant="h4">Dashboard</Typography>
+      </Box>
+    </Layout>
   );
 }

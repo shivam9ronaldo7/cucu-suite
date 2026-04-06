@@ -10,6 +10,7 @@ export default function App() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/scenarios" element={<Scenarios />} />
         <Route path="/features" element={<Features />} />
         <Route path="/tags" element={<Tags />} />
